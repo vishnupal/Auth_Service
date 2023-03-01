@@ -16,7 +16,7 @@ class UserService {
   }
   createToken(user) {
     try {
-      const token = jwt.sign(user, JWT_KEY, { expiresIn: '1h' });
+      const token = jwt.sign(user, JWT_KEY, { expiresIn: '1d' });
       return token;
     } catch (error) {
       console.log('Something gone wrong with token creation');
@@ -29,6 +29,14 @@ class UserService {
       return result;
     } catch (error) {
       console.log('Something gone wrong with token validation');
+      throw error;
+    }
+  }
+  checkPassword(userInputPlainPassword, encryptedPassword) {
+    try {
+      return bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
+    } catch (error) {
+      console.log('Something went wrong in password comparison');
       throw error;
     }
   }
